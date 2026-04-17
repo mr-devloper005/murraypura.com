@@ -13,12 +13,12 @@ export const siteContent = {
     description:
       'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
     primaryCta: {
-      label: 'Read latest stories',
-      href: '/articles',
+      label: 'Explore resources',
+      href: '/sbm',
     },
     secondaryCta: {
-      label: 'Explore visuals',
-      href: '/images',
+      label: 'View profiles',
+      href: '/profile',
     },
     searchPlaceholder: 'Search stories, visuals, listings, and more',
     focusLabel: 'Focus',
@@ -66,12 +66,12 @@ export const siteContent = {
     description:
       'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
     primaryCta: {
-      label: 'Get Started Free',
-      href: '/register',
+      label: 'Explore resources',
+      href: '/sbm',
     },
     secondaryCta: {
-      label: 'Contact Sales',
-      href: '/contact',
+      label: 'View profiles',
+      href: '/profile',
     },
   },
   taskSectionHeading: 'Latest {label}',
