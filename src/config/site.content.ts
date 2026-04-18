@@ -2,16 +2,15 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Independent reading platform',
+    tagline: 'SBM , Profile platform',
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
+    tagline: 'SBM , Profile platform',
   },
   hero: {
     badge: 'Latest stories and visuals',
     title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
-    description:
-      'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
     primaryCta: {
       label: 'Explore resources',
       href: '/sbm',
@@ -30,8 +29,7 @@ export const siteContent = {
   home: {
     metadata: {
       title: 'Stories, visuals, and discoverable content',
-      description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
+      description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
       openGraphTitle: 'Stories, visuals, and discoverable content',
       openGraphDescription:
         'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
@@ -63,8 +61,7 @@ export const siteContent = {
   cta: {
     badge: 'Start exploring',
     title: 'Explore articles, visuals, and resources through one connected experience.',
-    description:
-      'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
     primaryCta: {
       label: 'Explore resources',
       href: '/sbm',
@@ -81,31 +78,31 @@ export const siteContent = {
 export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'social'>, { title: string; description: string }> = {
   article: {
     title: 'Articles and stories',
-    description: 'Read articles, stories, guides, and long-form posts across topics and interests.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   listing: {
     title: 'Listings and discoverable pages',
-    description: 'Explore listings, services, brands, and structured pages organized for easier browsing.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   classified: {
     title: 'Classifieds and announcements',
-    description: 'Browse classifieds, offers, notices, and time-sensitive posts across categories.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   image: {
     title: 'Images and visual posts',
-    description: 'Explore image-led posts, galleries, and visual stories from across the platform.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   profile: {
     title: 'Profiles and public pages',
-    description: 'Discover public profiles, brand pages, and identity-focused posts in one place.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   sbm: {
     title: 'Curated links and saved resources',
-    description: 'Browse useful links, saved references, and curated resources organized for discovery.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   pdf: {
     title: 'PDFs and downloadable resources',
-    description: 'Open reports, documents, and downloadable resources shared across the platform.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
 }
 
