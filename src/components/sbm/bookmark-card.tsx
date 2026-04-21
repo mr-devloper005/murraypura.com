@@ -89,7 +89,7 @@ export function BookmarkCard({
 
   return (
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
-      <Card className="group h-full overflow-hidden border-border bg-card transition-all hover:border-muted-foreground/20">
+      <Card className="group h-full overflow-hidden rounded-[1.75rem] border border-[#e8dfd2] bg-[#fffefb] text-[#2a1f1a] shadow-[0_18px_50px_rgba(58,42,28,0.06)] transition-all hover:border-[#dfc9b0] hover:shadow-[0_22px_60px_rgba(58,42,28,0.09)]">
         <Link href={`/sbm/${bookmark.slug}`} className="block">
           <div className={cn('relative overflow-hidden', compact ? 'aspect-[4/3]' : 'aspect-[16/9]')}>
             <Image
@@ -100,10 +100,10 @@ export function BookmarkCard({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
             <div className="absolute left-3 top-3 flex items-center gap-2">
-              <Badge className="bg-background/90 text-foreground">
+              <Badge className="border-0 bg-[#e8c547]/95 font-semibold text-[#1a120e] shadow-sm backdrop-blur-sm">
                 {bookmark.category}
               </Badge>
-              <Badge variant="secondary" className="bg-black/60 text-white">
+              <Badge variant="secondary" className="border-0 bg-black/55 text-white backdrop-blur-sm">
                 {bookmark.domain}
               </Badge>
             </div>
@@ -126,25 +126,25 @@ export function BookmarkCard({
               <AvatarImage src={author.avatar} alt={author.name} />
               <AvatarFallback>{author.name.charAt(0)}</AvatarFallback>
             </Avatar>
-            <div className="text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">{author.name}</span>
+            <div className="text-sm text-[#6b584c]">
+              <span className="font-medium text-[#2a1f1a]">{author.name}</span>
               <span className="mx-2">•</span>
               <span>{bookmark.domain}</span>
             </div>
           </div>
 
           <Link href={`/sbm/${bookmark.slug}`}>
-            <h3 className={cn('mb-2 font-semibold leading-tight text-foreground', compact ? 'text-base' : 'text-lg')}>
+            <h3 className={cn('mb-2 font-semibold leading-tight text-[#2a1f1a]', compact ? 'text-base' : 'text-lg')}>
               {bookmark.title}
             </h3>
           </Link>
-          <p className={cn('mb-4 text-sm text-muted-foreground', compact ? 'line-clamp-2' : 'line-clamp-3')}>
+          <p className={cn('mb-4 text-sm text-[#6b584c]', compact ? 'line-clamp-2' : 'line-clamp-3')}>
             {bookmark.description}
           </p>
 
           <div className="flex flex-wrap gap-2">
             {bookmark.tags.slice(0, compact ? 2 : 4).map((tag) => (
-              <Badge key={tag} variant="outline" className="text-xs">
+              <Badge key={tag} variant="outline" className="border-[#e4d8cc] bg-[#f3ebe0]/50 text-xs text-[#5c4810]">
                 {tag}
               </Badge>
             ))}
@@ -155,7 +155,10 @@ export function BookmarkCard({
               <Button
                 variant={isUpvoted ? 'secondary' : 'ghost'}
                 size="sm"
-                className="gap-2"
+                className={cn(
+                  'gap-2 rounded-full',
+                  isUpvoted ? 'border border-[#e4d8cc] bg-[#f3ebe0] text-[#2a1f1a]' : 'text-[#6b584c] hover:bg-[#f3ebe0]/60 hover:text-[#2a1f1a]'
+                )}
                 onClick={handleUpvote}
               >
                 <ArrowUp className="h-4 w-4" />
@@ -164,17 +167,20 @@ export function BookmarkCard({
               <Button
                 variant={isSaved ? 'secondary' : 'ghost'}
                 size="sm"
-                className="gap-2"
+                className={cn(
+                  'gap-2 rounded-full',
+                  isSaved ? 'border border-[#e4d8cc] bg-[#f3ebe0] text-[#2a1f1a]' : 'text-[#6b584c] hover:bg-[#f3ebe0]/60 hover:text-[#2a1f1a]'
+                )}
                 onClick={handleSave}
               >
-                <Bookmark className={cn('h-4 w-4', isSaved && 'fill-current')} />
+                <Bookmark className={cn('h-4 w-4', isSaved && 'fill-current text-[#c9a227]')} />
                 {saves}
               </Button>
-              <Button variant="ghost" size="sm" className="gap-2" onClick={handleComments}>
+              <Button variant="ghost" size="sm" className="gap-2 rounded-full text-[#6b584c] hover:bg-[#f3ebe0]/60 hover:text-[#2a1f1a]" onClick={handleComments}>
                 <MessageSquare className="h-4 w-4" />
                 {bookmark.commentsCount}
               </Button>
-              <Button variant="ghost" size="sm" className="gap-2" onClick={handleShare}>
+              <Button variant="ghost" size="sm" className="gap-2 rounded-full text-[#6b584c] hover:bg-[#f3ebe0]/60 hover:text-[#2a1f1a]" onClick={handleShare}>
                 {shareLabel === 'Copied' ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
                 {shareLabel}
               </Button>

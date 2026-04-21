@@ -23,6 +23,14 @@ import { useToast } from '@/components/ui/use-toast'
 import { loadFromStorage, saveToStorage, storageKeys } from '@/lib/local-storage'
 import type { Bookmark as BookmarkType } from '@/types'
 
+const shell = 'min-h-screen bg-[#faf6f0] text-[#2a1f1a]'
+const hero =
+  'relative overflow-hidden border-b border-[#e8dfd2] bg-[linear-gradient(165deg,#fffefb_0%,#faf6f0_45%,#f3ebe0_100%)]'
+const panel = 'rounded-[2rem] border border-[#e8dfd2] bg-[#fffefb] p-6 shadow-[0_24px_70px_rgba(58,42,28,0.07)] sm:p-8'
+const sidePanel = 'rounded-[1.75rem] border border-[#e8dfd2] bg-white/90 p-5 shadow-[0_14px_40px_rgba(58,42,28,0.05)]'
+const muted = 'text-[#6b584c]'
+const action = 'rounded-full bg-[#e8c547] px-6 text-[#1a120e] shadow-[0_14px_40px_rgba(232,197,71,0.35)] hover:bg-[#dfc03a]'
+
 export default function SubmitBookmarkPage() {
   const router = useRouter()
   const { user } = useAuth()
@@ -110,65 +118,67 @@ export default function SubmitBookmarkPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className={shell}>
       <NavbarShell />
 
       <main>
-        <section className="border-b border-border bg-secondary/30">
-          <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Sparkles className="h-4 w-4 text-accent" />
-              Submit a Bookmark
+        <section className={hero}>
+          <div className="pointer-events-none absolute -right-24 top-0 h-72 w-72 rounded-full bg-[#e8c547]/12 blur-3xl" />
+          <div className="pointer-events-none absolute -left-20 bottom-0 h-56 w-56 rounded-full bg-[#c9a227]/10 blur-3xl" />
+          <div className="relative mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+            <div className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] ${muted}`}>
+              <Sparkles className="h-4 w-4 text-[#c9a227]" />
+              Submit a bookmark
             </div>
-            <h1 className="mt-2 text-3xl font-bold text-foreground">Share a link with the community.</h1>
-            <p className="mt-2 text-muted-foreground">
-              Add a short description, pick a category, and tag it for easy discovery.
+            <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-[-0.04em] sm:text-[2.75rem]">Share a link with the community</h1>
+            <p className={`mt-4 max-w-2xl text-base leading-relaxed ${muted}`}>
+              Add a short description, pick a category, and tag it for easy discovery—your pick lands in the bookmark feed.
             </p>
           </div>
         </section>
 
-        <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-xl border border-border bg-card p-6"
+              className={panel}
             >
               <form
                 className="space-y-5"
                 onSubmit={handleSubmit}
               >
                 <div>
-                  <label className="text-sm font-medium text-foreground">URL</label>
+                  <label className="text-sm font-medium text-[#2a1f1a]">URL</label>
                   <Input
                     placeholder="https://"
-                    className="mt-2"
+                    className="mt-2 border-[#e4d8cc] bg-white/90"
                     value={url}
                     onChange={(event) => setUrl(event.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground">Title</label>
+                  <label className="text-sm font-medium text-[#2a1f1a]">Title</label>
                   <Input
                     placeholder="Give this link a clear title"
-                    className="mt-2"
+                    className="mt-2 border-[#e4d8cc] bg-white/90"
                     value={title}
                     onChange={(event) => setTitle(event.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground">Description</label>
+                  <label className="text-sm font-medium text-[#2a1f1a]">Description</label>
                   <Textarea
                     placeholder="Why is this link useful?"
-                    className="mt-2 min-h-[140px]"
+                    className="mt-2 min-h-[140px] border-[#e4d8cc] bg-white/90"
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground">Category</label>
+                  <label className="text-sm font-medium text-[#2a1f1a]">Category</label>
                   <Select value={category} onValueChange={setCategory}>
-                    <SelectTrigger className="mt-2">
+                    <SelectTrigger className="mt-2 border-[#e4d8cc] bg-white/90">
                       <SelectValue placeholder="Choose a category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -181,26 +191,29 @@ export default function SubmitBookmarkPage() {
                   </Select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground">Tags</label>
+                  <label className="text-sm font-medium text-[#2a1f1a]">Tags</label>
                   <Input
                     placeholder="Add tags separated by commas"
-                    className="mt-2"
+                    className="mt-2 border-[#e4d8cc] bg-white/90"
                     value={tagsInput}
                     onChange={(event) => setTagsInput(event.target.value)}
                   />
                   <div className="mt-3 flex flex-wrap gap-2">
                     {['Design', 'Productivity', 'AI', 'Frontend', 'Research'].map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs">
+                      <Badge key={tag} variant="outline" className="border-[#e4d8cc] bg-[#f3ebe0]/60 text-xs text-[#5c4810]">
                         {tag}
                       </Badge>
                     ))}
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <Button type="submit">Submit Bookmark</Button>
+                  <Button type="submit" className={action}>
+                    Submit bookmark
+                  </Button>
                   <Button
                     type="button"
                     variant="outline"
+                    className="rounded-full border-[#e4d8cc] bg-white/80 text-[#2a1f1a] hover:bg-[#fffefb]"
                     onClick={() => {
                       setStatusMessage('Draft saved locally.')
                       toast({
@@ -213,24 +226,24 @@ export default function SubmitBookmarkPage() {
                   </Button>
                 </div>
                 {statusMessage && (
-                  <p className="text-sm text-muted-foreground">{statusMessage}</p>
+                  <p className={`text-sm ${muted}`}>{statusMessage}</p>
                 )}
               </form>
             </motion.div>
 
             <div className="space-y-6">
-              <div className="rounded-xl border border-border bg-secondary/30 p-5">
-                <h3 className="text-base font-semibold text-foreground">Submission Tips</h3>
-                <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              <div className={sidePanel}>
+                <h3 className="text-base font-semibold text-[#2a1f1a]">Submission tips</h3>
+                <ul className={`mt-3 space-y-2 text-sm ${muted}`}>
                   <li>Keep titles short and descriptive.</li>
                   <li>Explain the main takeaway in one sentence.</li>
                   <li>Add 3-5 tags to improve discoverability.</li>
                 </ul>
               </div>
-              <div className="rounded-xl border border-border bg-card p-5">
-                <h4 className="text-sm font-semibold text-foreground">Preview Checklist</h4>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Once submitted, your link will appear in Trending or Latest based on community votes.
+              <div className={sidePanel}>
+                <h4 className="text-sm font-semibold text-[#2a1f1a]">What happens next</h4>
+                <p className={`mt-2 text-sm ${muted}`}>
+                  Once submitted, your link appears in the bookmark feed so others can open, save, and discuss it.
                 </p>
               </div>
             </div>

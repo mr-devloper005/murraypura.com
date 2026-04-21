@@ -79,9 +79,16 @@ const cardStyles = {
     title: 'text-[#1f2617]',
     badge: 'bg-[#1f2617] text-[#edf5dc]',
   },
+  'bookmark-shelf': {
+    frame: 'rounded-[1.75rem] border border-[#e8dfd2] bg-[#fffefb] shadow-[0_18px_50px_rgba(58,42,28,0.06)] hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(58,42,28,0.1)]',
+    muted: 'text-[#6b584c]',
+    title: 'text-[#2a1f1a]',
+    badge: 'border border-[#e4d8cc] bg-[#f3ebe0] text-[#5c4810]',
+  },
 } as const
 
-const getVariantForTask = (taskKey: TaskKey) => SITE_THEME.cards[taskKey] || 'listing-elevated'
+const getVariantForTask = (taskKey: TaskKey) =>
+  taskKey === 'sbm' || taskKey === 'social' ? 'bookmark-shelf' : SITE_THEME.cards[taskKey] || 'listing-elevated'
 
 export function TaskPostCard({
   post,
@@ -164,7 +171,7 @@ export function TaskPostCard({
   if (isBookmarkVariant) {
     return (
       <Link href={href} className={`group flex h-full flex-row items-start gap-4 overflow-hidden p-5 transition duration-300 ${visualVariant.frame}`}>
-        <div className="mt-1 rounded-full bg-white/10 p-2.5 text-current transition group-hover:scale-105">
+        <div className="mt-1 rounded-full border border-[#e8c547]/40 bg-[#e8c547]/15 p-2.5 text-[#6b4b16] transition group-hover:scale-105 group-hover:bg-[#e8c547]/25">
           <ExternalLink className="h-4 w-4" />
         </div>
         <div className="min-w-0 flex-1">

@@ -32,11 +32,14 @@ const variantShells = {
   'image-masonry': 'bg-[linear-gradient(180deg,#09101d_0%,#111c2f_100%)] text-white',
   'image-portfolio': 'bg-[linear-gradient(180deg,#07111f_0%,#13203a_100%)] text-white',
   'profile-creator': 'bg-[linear-gradient(180deg,#0a1120_0%,#101c34_100%)] text-white',
-  'profile-business': 'bg-[linear-gradient(180deg,#f6fbff_0%,#ffffff_100%)]',
+  'profile-business':
+    'bg-[radial-gradient(circle_at_12%_8%,rgba(201,162,39,0.1),transparent_32%),linear-gradient(180deg,#fffefb_0%,#faf6f0_48%,#f3ebe0_100%)]',
   'classified-bulletin': 'bg-[linear-gradient(180deg,#edf3e4_0%,#ffffff_100%)]',
   'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
-  'sbm-curation': 'bg-[linear-gradient(180deg,#fff7ee_0%,#ffffff_100%)]',
-  'sbm-library': 'bg-[linear-gradient(180deg,#f7f8fc_0%,#ffffff_100%)]',
+  'sbm-curation':
+    'bg-[radial-gradient(circle_at_88%_0%,rgba(201,162,39,0.1),transparent_28%),linear-gradient(180deg,#fffefb_0%,#faf6f0_50%,#f3ebe0_100%)]',
+  'sbm-library':
+    'bg-[radial-gradient(circle_at_20%_20%,rgba(139,110,86,0.08),transparent_30%),linear-gradient(180deg,#fffefb_0%,#faf6f0_48%,#f3ebe0_100%)]',
 } as const
 
 export async function TaskListPage({ task, category }: { task: TaskKey; category?: string }) {
@@ -69,7 +72,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         input: 'border-white/10 bg-white/6 text-white',
         button: 'bg-white text-slate-950 hover:bg-slate-200',
       }
-    : layoutKey.startsWith('article') || layoutKey.startsWith('sbm')
+    : layoutKey.startsWith('article')
       ? {
           muted: 'text-[#72594a]',
           panel: 'border border-[#dbc6b6] bg-white/90',
@@ -77,6 +80,14 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           input: 'border border-[#dbc6b6] bg-white text-[#2f1d16]',
           button: 'bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
         }
+      : layoutKey.startsWith('sbm') || layoutKey === 'profile-business'
+        ? {
+            muted: 'text-[#6b584c]',
+            panel: 'border border-[#e8dfd2] bg-[#fffefb]/95 shadow-[0_20px_60px_rgba(58,42,28,0.06)]',
+            soft: 'border border-[#e4d8cc] bg-[#f3ebe0]/70',
+            input: 'border border-[#e4d8cc] bg-white text-[#2a1f1a]',
+            button: 'bg-[#e8c547] text-[#1a120e] hover:bg-[#dfc03a]',
+          }
       : {
           muted: 'text-slate-600',
           panel: 'border border-slate-200 bg-white',
@@ -187,13 +198,21 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {layoutKey === 'profile-creator' || layoutKey === 'profile-business' ? (
-          <section className={`mb-12 rounded-[2.2rem] p-8 shadow-[0_24px_70px_rgba(15,23,42,0.1)] ${ui.panel}`}>
+          <section className={`mb-12 rounded-[2.2rem] p-8 shadow-[0_24px_70px_rgba(58,42,28,0.08)] ${ui.panel}`}>
             <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
               <div className={`min-h-[240px] rounded-[2rem] ${ui.soft}`} />
               <div>
                 <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-                <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Profiles with stronger identity, trust, and reputation cues.</h1>
-                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>This layout prioritizes the person or business surface first, then lets the feed continue below without borrowing the same visual logic used by articles or listings.</p>
+                <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">
+                  {layoutKey === 'profile-business'
+                    ? 'Public profiles that feel like a warm introduction.'
+                    : 'Profiles with stronger identity, trust, and reputation cues.'}
+                </h1>
+                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>
+                  {layoutKey === 'profile-business'
+                    ? 'Browse curators, studios, and members who anchor their bookmark shelves to a human story. Cards below keep the same cream, gold, and serif rhythm as the rest of Murraypura.'
+                    : 'This layout prioritizes the person or business surface first, then lets the feed continue below without borrowing the same visual logic used by articles or listings.'}
+                </p>
               </div>
             </div>
           </section>
@@ -219,8 +238,10 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           <section className="mb-12 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
             <div>
               <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Curated resources arranged more like collections than a generic post feed.</h1>
-              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>Bookmarks, saved resources, and reference-style items need calmer grouping and lighter metadata. This variant gives them that separation.</p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Bookmark shelves with breathing room.</h1>
+              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>
+                Save research, inspiration, and reference stacks without crowding them into a noisy timeline. Filters stay soft, typography stays editorial, and gold actions highlight the next step—open, save, or share a collection.
+              </p>
             </div>
             <div className={`rounded-[2rem] p-6 ${ui.panel}`}>
               <p className={`text-xs uppercase tracking-[0.24em] ${ui.muted}`}>Collection filter</p>
@@ -237,7 +258,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
-        {intro ? (
+        {intro && task !== 'profile' && task !== 'sbm' ? (
           <section className={`mb-12 rounded-[2rem] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:p-8 ${ui.panel}`}>
             <h2 className="text-2xl font-semibold text-foreground">{intro.title}</h2>
             {intro.paragraphs.map((paragraph) => (

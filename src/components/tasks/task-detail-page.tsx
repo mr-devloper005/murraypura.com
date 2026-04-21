@@ -1,7 +1,7 @@
 import { ContentImage } from "@/components/shared/content-image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MapPin, Globe, Phone, Tag, Mail } from "lucide-react";
+import { MapPin, Globe, Phone, Tag, Mail, ExternalLink, ArrowRight } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { Footer } from "@/components/shared/footer";
 import { TaskPostCard } from "@/components/shared/task-post-card";
@@ -24,6 +24,7 @@ type PostContent = {
   category?: string;
   location?: string;
   address?: string;
+  url?: string;
   website?: string;
   phone?: string;
   email?: string;
@@ -247,14 +248,24 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
     );
   }
 
+  const bookmarkSourceUrl =
+    task === "sbm"
+      ? (typeof content.url === "string" && content.url.trim()) ||
+        (typeof content.website === "string" && content.website.trim()) ||
+        null
+      : null;
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className={cn("min-h-screen", task === "sbm" ? "bg-[#faf6f0] text-[#2a1f1a]" : "bg-background")}>
       <NavbarShell />
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <SchemaJsonLd data={schemaPayload} />
         <Link
           href={taskConfig?.route || "/"}
-          className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          className={cn(
+            "mb-6 inline-flex items-center text-sm hover:opacity-90",
+            task === "sbm" ? "font-medium text-[#6b584c] hover:text-[#2a1f1a]" : "text-muted-foreground hover:text-foreground"
+          )}
         >
           ← Back to {taskConfig?.label || "posts"}
         </Link>
@@ -316,9 +327,26 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                   </div>
                 ) : null}
 
-                <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6")}>
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                    <Badge variant="secondary" className="inline-flex items-center gap-1">
+                <div
+                  className={cn(
+                    isClassified ? "mx-auto w-full max-w-4xl" : "mt-6",
+                    task === "sbm" &&
+                      "rounded-[2rem] border border-[#e8dfd2] bg-[#fffefb] p-8 shadow-[0_24px_70px_rgba(58,42,28,0.07)] sm:p-10"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "flex flex-wrap items-center gap-3 text-sm",
+                      task === "sbm" ? "text-[#6b584c]" : "text-muted-foreground"
+                    )}
+                  >
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        "inline-flex items-center gap-1",
+                        task === "sbm" && "border border-[#e4d8cc] bg-[#f3ebe0] text-[#5c4810]"
+                      )}
+                    >
                       <Tag className="h-3.5 w-3.5" />
                       {category}
                     </Badge>
@@ -329,8 +357,25 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                       </span>
                     )}
                   </div>
-                  <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
-                  <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
+                  <h1 className={cn("mt-4 text-3xl font-semibold", task === "sbm" ? "tracking-tight text-[#2a1f1a]" : "text-foreground")}>
+                    {post.title}
+                  </h1>
+                  <RichContent
+                    html={descriptionHtml}
+                    className={cn("mt-3 max-w-3xl", task === "sbm" && "text-[#6b584c]")}
+                  />
+                  {task === "sbm" && bookmarkSourceUrl ? (
+                    <a
+                      href={bookmarkSourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#e8c547] px-5 py-3 text-sm font-semibold text-[#1a120e] shadow-[0_14px_40px_rgba(232,197,71,0.35)] transition hover:bg-[#dfc03a]"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Open original link
+                      <ArrowRight className="h-4 w-4 opacity-80" />
+                    </a>
+                  ) : null}
                 </div>
               </>
             ) : null}
@@ -479,37 +524,51 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
           {related.length ? (
             <>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-foreground">
+              <h2 className={cn("text-xl font-semibold", task === "sbm" ? "text-[#2a1f1a]" : "text-foreground")}>
                 More in {category}
               </h2>
               {taskConfig?.route && (
                 <Link
                   href={taskConfig.route}
-                  className="text-sm text-muted-foreground hover:text-foreground"
+                  className={cn(
+                    "text-sm hover:underline",
+                    task === "sbm" ? "font-semibold text-[#c9a227]" : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
                   View all
                 </Link>
               )}
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className={cn("grid gap-6", task === "sbm" ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-3")}>
               {related.map((item) => (
                 <TaskPostCard
                   key={item.id}
                   post={item}
                   href={buildPostUrl(task, item.slug)}
+                  taskKey={task}
                 />
               ))}
             </div>
             </>
           ) : null}
-          <nav className="mt-6 rounded-2xl border border-border bg-card/60 p-4">
-            <p className="text-sm font-semibold text-foreground">Related links</p>
+          <nav
+            className={cn(
+              "mt-6 rounded-2xl p-4",
+              task === "sbm"
+                ? "border border-[#e8dfd2] bg-[#fffefb] shadow-[0_14px_40px_rgba(58,42,28,0.05)]"
+                : "border border-border bg-card/60"
+            )}
+          >
+            <p className={cn("text-sm font-semibold", task === "sbm" ? "text-[#2a1f1a]" : "text-foreground")}>Related links</p>
             <ul className="mt-2 space-y-2 text-sm">
               {related.map((item) => (
                 <li key={`link-${item.id}`}>
                   <Link
                     href={buildPostUrl(task, item.slug)}
-                    className="text-primary underline-offset-4 hover:underline"
+                    className={cn(
+                      "underline-offset-4 hover:underline",
+                      task === "sbm" ? "font-medium text-[#6b584c] hover:text-[#2a1f1a]" : "text-primary"
+                    )}
                   >
                     {item.title}
                   </Link>
@@ -519,7 +578,10 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                 <li>
                   <Link
                     href={taskConfig.route}
-                    className="text-primary underline-offset-4 hover:underline"
+                    className={cn(
+                      "underline-offset-4 hover:underline",
+                      task === "sbm" ? "font-medium text-[#c9a227] hover:text-[#a67f12]" : "text-primary"
+                    )}
                   >
                     Browse all {taskConfig.label}
                   </Link>
@@ -528,7 +590,10 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
               <li>
                 <Link
                   href={`/search?q=${encodeURIComponent(category)}`}
-                  className="text-primary underline-offset-4 hover:underline"
+                  className={cn(
+                    "underline-offset-4 hover:underline",
+                    task === "sbm" ? "font-medium text-[#6b584c] hover:text-[#2a1f1a]" : "text-primary"
+                  )}
                 >
                   Search more in {category}
                 </Link>
