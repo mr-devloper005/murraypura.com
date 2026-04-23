@@ -17,7 +17,6 @@ import {
   Plus,
   ArrowRight,
   Calendar,
-  Bell,
   Settings,
   ChevronRight,
   MoreHorizontal,
@@ -269,11 +268,6 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="flex gap-3">
-                <Button variant="outline" size="icon" asChild>
-                  <Link href="/dashboard/notifications">
-                    <Bell className="h-4 w-4" />
-                  </Link>
-                </Button>
             <Button variant="outline" size="icon" asChild>
               <Link href="/settings">
                 <Settings className="h-4 w-4" />
@@ -704,9 +698,6 @@ export default function DashboardPage() {
                 <h2 className="text-lg font-semibold text-foreground">
                   Recent Activity
                 </h2>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/dashboard/notifications">View all</Link>
-                </Button>
               </div>
               <div className="space-y-4">
                 {recentActivity.map((activity) => (

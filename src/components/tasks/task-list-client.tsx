@@ -53,6 +53,17 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
   }, [category, initialPosts, localPosts]);
 
   if (!merged.length) {
+    if (task === "sbm") {
+      return (
+        <div className="rounded-[2rem] border border-dashed border-[#e4d8cc] bg-[#fffefb] px-8 py-16 text-center shadow-[0_18px_50px_rgba(58,42,28,0.04)]">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#a18b7a]">Your shelf is quiet</p>
+          <p className="mt-3 text-lg font-semibold text-[#2a1f1a]">No bookmarks in this lane yet</p>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[#6b584c]">
+            Try another category, submit a link from the header, or revisit when curators publish new collections.
+          </p>
+        </div>
+      );
+    }
     return (
       <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
         No posts yet for this section.
@@ -61,7 +72,13 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div
+      className={
+        task === "sbm"
+          ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          : "grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+      }
+    >
       {merged.map((post) => {
         const localOnly = (post as any).localOnly;
         const href = localOnly

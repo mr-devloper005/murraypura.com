@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Bookmark, Building2, Compass, FileText, Globe2, Image as ImageIcon, LayoutGrid, MapPin, ShieldCheck, Tag, User } from 'lucide-react'
+import { ArrowRight, Bookmark, Building2, Compass, FileText, Heart, Image as ImageIcon, LayoutGrid, MapPin, MessageCircle, Share2, ShieldCheck, Tag, User } from 'lucide-react'
 import { ContentImage } from '@/components/shared/content-image'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
@@ -122,19 +122,6 @@ function getVisualTone() {
     badge: 'bg-[#8df0c8] text-[#07111f]',
     action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
     actionAlt: 'border border-white/10 bg-white/6 text-white hover:bg-white/10',
-  }
-}
-
-function getCurationTone() {
-  return {
-    shell: 'bg-[#f7f1ea] text-[#261811]',
-    panel: 'border border-[#ddcdbd] bg-[#fffaf4] shadow-[0_24px_60px_rgba(91,56,37,0.08)]',
-    soft: 'border border-[#e8dbce] bg-[#f3e8db]',
-    muted: 'text-[#71574a]',
-    title: 'text-[#261811]',
-    badge: 'bg-[#5b2b3b] text-[#fff0f5]',
-    action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
-    actionAlt: 'border border-[#ddcdbd] bg-transparent text-[#261811] hover:bg-[#efe3d6]',
   }
 }
 
@@ -410,62 +397,219 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
 }
 
 function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }: { primaryTask?: EnabledTask; bookmarkPosts: SitePost[]; profilePosts: SitePost[]; articlePosts: SitePost[] }) {
-  const tone = getCurationTone()
-  const collections = bookmarkPosts.length ? bookmarkPosts.slice(0, 4) : articlePosts.slice(0, 4)
+  const heroImage =
+    'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=2000&q=80'
+  const marqueeItems = ['Smart collections', 'Profile spotlights', 'Shared reading lists', 'Pinned research', 'Weekly saves', 'Trusted curators']
+  const collectionPlaceholders = [
+    { id: 'ph-1', title: 'Design systems vault', summary: 'UI kits, tokens, and references your team revisits weekly.', href: '/sbm' },
+    { id: 'ph-2', title: 'Founder reading shelf', summary: 'Essays on growth, hiring, and calm operations—saved in one lane.', href: '/sbm/collections/new' },
+    { id: 'ph-3', title: 'Research bookmarks', summary: 'Long-form sources grouped for deep work sessions.', href: '/sbm' },
+    { id: 'ph-4', title: 'Community picks', summary: 'Member-submitted links moderated for quality and context.', href: '/community' },
+  ]
+  const collectionTiles =
+    bookmarkPosts.length >= 4
+      ? bookmarkPosts.slice(0, 4).map((post) => ({
+          id: post.id,
+          title: post.title,
+          summary: post.summary || 'Curated saves with context, tags, and gentle pacing.',
+          href: getTaskHref(resolveTaskKey(post.task, 'sbm'), post.slug),
+        }))
+      : collectionPlaceholders
+
+  const expertPlaceholders = [
+    { id: 'ex-1', name: 'Dr. Lena Ortiz', role: 'Collections & taxonomy lead', slug: 'lena-ortiz', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80' },
+    { id: 'ex-2', name: 'Noah Kim', role: 'Community bookmarking guide', slug: 'noah-kim', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80' },
+    { id: 'ex-3', name: 'Amelia Brooks', role: 'Profiles & trust programs', slug: 'amelia-brooks', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=800&q=80' },
+  ]
   const people = profilePosts.slice(0, 3)
+  const expertTiles =
+    people.length >= 3
+      ? people.slice(0, 3).map((post) => ({
+          id: post.id,
+          name: post.title,
+          role: post.summary || 'Curator profile, saved resources, and collection notes.',
+          href: `/profile/${post.slug}`,
+          image: getPostImage(post),
+        }))
+      : expertPlaceholders.map((row) => ({
+          id: row.id,
+          name: row.name,
+          role: row.role,
+          href: '/profile',
+          image: row.image,
+        }))
+
+  const reelPlaceholders = [
+    { id: 'r1', title: 'Night routine saves', image: 'https://images.unsplash.com/photo-1508186225823-0963cf91ab3d?auto=format&fit=crop&w=900&q=80', href: '/sbm' },
+    { id: 'r2', title: 'Studio moodboard', image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80', href: '/sbm' },
+    { id: 'r3', title: 'Weekly digest', image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=900&q=80', href: '/sbm' },
+  ]
+  const reelSource = bookmarkPosts.length ? bookmarkPosts.slice(0, 3) : articlePosts.slice(0, 3)
+  const reelTiles =
+    reelSource.length >= 3
+      ? reelSource.slice(0, 3).map((post) => ({
+          id: post.id,
+          title: post.title,
+          image: getPostImage(post),
+          href: getTaskHref(resolveTaskKey(post.task, 'sbm'), post.slug),
+        }))
+      : reelPlaceholders
 
   return (
-    <main className={tone.shell}>
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-start">
-          <div>
-            <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] ${tone.badge}`}>
-              <Bookmark className="h-3.5 w-3.5" />
-              Curated collections
-            </span>
-            <h1 className={`mt-6 max-w-4xl text-5xl font-semibold tracking-[-0.06em] sm:text-6xl ${tone.title}`}>
-              Save, organize, and revisit resources through shelves, boards, and curated collections.
+    <main className="bg-[#faf6f0] text-[#2a1f1a]">
+      <section className="relative">
+        <div className="relative min-h-[78vh] overflow-hidden">
+          <ContentImage src={heroImage} alt="Warm editorial portrait" fill className="object-cover" priority sizes="100vw" intrinsicWidth={2000} intrinsicHeight={1200} />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1f1612]/88 via-[#2a1f1a]/55 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1f1612]/55 via-transparent to-transparent" />
+
+          <div className="relative mx-auto flex min-h-[78vh] max-w-7xl flex-col justify-center px-4 pb-32 pt-28 sm:px-6 lg:px-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#f4e7c5]">Murraypura profiles &amp; saves</p>
+            <h1 className="mt-5 max-w-3xl text-5xl font-semibold leading-[1.05] tracking-[-0.04em] text-white sm:text-6xl lg:text-[4rem]">
+              Thoughtful, personalized{' '}
+              <span className="font-script text-[#f3d77a] sm:text-[4.5rem] lg:text-[5.25rem]">profiles &amp; bookmarks</span>
             </h1>
-            <p className={`mt-6 max-w-2xl text-base leading-8 ${tone.muted}`}>{SITE_CONFIG.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={primaryTask?.route || '/sbm'} className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}>
-                Open collections
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-[#f0e5d8]">Discover curators, build shelves of links, and keep every profile anchored in context—without the noise of generic feeds.</p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link
+                href={primaryTask?.route || '/sbm'}
+                className="inline-flex items-center gap-2 rounded-full bg-[#e8c547] px-6 py-3 text-sm font-semibold text-[#1a120e] shadow-[0_18px_50px_rgba(0,0,0,0.25)] hover:bg-[#dfc03a]"
+              >
+                Save your first collection
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.actionAlt}`}>
-                Explore curators
+              <Link href="/profile" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur hover:bg-white/15">
+                View featured profiles
               </Link>
             </div>
           </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            {collections.map((post) => (
-              <Link key={post.id} href={getTaskHref(resolveTaskKey(post.task, 'sbm'), post.slug)} className={`rounded-[1.8rem] p-6 ${tone.panel}`}>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Collection</p>
-                <h3 className="mt-3 text-2xl font-semibold">{post.title}</h3>
-                <p className={`mt-3 text-sm leading-8 ${tone.muted}`}>{post.summary || 'A calmer bookmark surface with room for context and grouping.'}</p>
-              </Link>
-            ))}
-          </div>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Why this feels different</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">More like saved boards and reading shelves than a generic post feed.</h2>
-            <p className={`mt-4 max-w-2xl text-sm leading-8 ${tone.muted}`}>The structure is calmer, the cards are less noisy, and the page encourages collecting and returning instead of forcing everything into a fast-scrolling list.</p>
+        <div className="relative z-10 -mt-14 mx-auto max-w-6xl overflow-hidden rounded-[999px] border border-[#1f2937] bg-[#0b1220] px-4 py-4 text-[#f4e7c5] shadow-[0_24px_80px_rgba(0,0,0,0.35)] sm:px-8">
+          <div className="flex overflow-hidden whitespace-nowrap">
+            <div className="animate-marquee-luxe flex gap-10 pr-10 text-xs font-semibold uppercase tracking-[0.35em] sm:text-sm">
+              {[...marqueeItems, ...marqueeItems].map((label, index) => (
+                <span key={`${label}-${index}`} className="inline-flex items-center gap-3">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#e8c547]" />
+                  {label}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {people.map((post) => (
-              <Link key={post.id} href={`/profile/${post.slug}`} className={`rounded-[1.8rem] p-5 ${tone.soft}`}>
-                <div className="relative h-32 overflow-hidden rounded-[1.2rem]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
+        </div>
+      </section>
+
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a18b7a]">Our promise</p>
+          <p className="mt-6 text-3xl font-semibold leading-snug tracking-[-0.03em] text-[#2a1f1a] sm:text-4xl">
+            Murraypura exists so people can present who they are, save what matters, and return to it with the same quiet confidence as opening a favorite notebook.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a18b7a]">Signature saves</p>
+          <h2 className="text-4xl font-semibold tracking-[-0.03em] text-[#2a1f1a]">Our bookmark pathways</h2>
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-[#6b584c]">Each lane is tuned for profiles and social bookmarking—no listings, classifieds, or stray formats stealing attention.</p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {collectionTiles.map((tile, index) => (
+            <Link
+              key={tile.id}
+              href={tile.href}
+              className={`group relative overflow-hidden rounded-[2rem] border border-[#e8dfd2] bg-[#fffefb] p-6 shadow-[0_24px_70px_rgba(58,42,28,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(58,42,28,0.12)] ${index === 1 ? 'lg:mt-8' : ''}`}
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#a18b7a]">Lane {index + 1}</p>
+              <h3 className="mt-4 text-2xl font-semibold text-[#2a1f1a]">{tile.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-[#6b584c]">{tile.summary}</p>
+              {index === 1 ? (
+                <span className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#e8c547] px-4 py-2 text-xs font-semibold text-[#1a120e]">
+                  Book a walkthrough
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </span>
+              ) : (
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#2a1f1a] underline-offset-4 group-hover:underline">
+                  Open lane
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              )}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-[#f3ebe0]/70 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-3 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#8a7568]">People behind the saves</p>
+            <h2 className="text-4xl font-semibold tracking-[-0.03em] text-[#2a1f1a]">Meet our profile curators</h2>
+            <p className="mx-auto max-w-2xl text-sm leading-relaxed text-[#6b584c]">Every highlighted profile blends identity, expertise, and the collections they steward for the community.</p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {expertTiles.map((person, index) => {
+              const highlight = index === 1
+              return (
+                <Link
+                  key={person.id}
+                  href={person.href}
+                  className={`relative overflow-hidden rounded-[2rem] border border-[#e4d8cc] bg-white shadow-[0_24px_70px_rgba(58,42,28,0.08)] ${highlight ? 'md:-translate-y-2' : ''}`}
+                >
+                  <div className="relative h-72 w-full overflow-hidden rounded-t-[2rem]">
+                    <ContentImage src={person.image} alt={person.name} fill className="object-cover" sizes="(max-width:768px) 100vw, 33vw" intrinsicWidth={800} intrinsicHeight={960} />
+                    {highlight ? <div className="absolute inset-0 bg-gradient-to-t from-[#1f1612]/88 via-transparent to-transparent" /> : null}
+                  </div>
+                  {!highlight ? (
+                    <div className="space-y-2 px-6 py-6">
+                      <p className="text-xs uppercase tracking-[0.2em] text-[#a18b7a]">Curator</p>
+                      <p className="text-lg font-semibold text-[#2a1f1a]">{person.name}</p>
+                      <p className="text-sm text-[#6b584c]">{person.role}</p>
+                    </div>
+                  ) : null}
+                  {highlight ? (
+                    <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-[#e8c547] px-4 py-3 text-left text-sm font-semibold text-[#1a120e] shadow-lg">
+                      {person.name}
+                      <span className="mt-1 block text-xs font-medium text-[#3d2f28]">{person.role}</span>
+                    </div>
+                  ) : null}
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-3 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a18b7a]">Community proof</p>
+          <h2 className="text-4xl font-semibold tracking-[-0.03em] text-[#2a1f1a]">1000+ happy savers</h2>
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-[#6b584c]">Vertical story cards echo the social bookmarking energy members share every week.</p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {reelTiles.map((reel) => (
+            <Link key={reel.id} href={reel.href} className="relative mx-auto w-full max-w-xs overflow-hidden rounded-[2rem] border border-[#e8dfd2] bg-[#0b1220] shadow-[0_30px_80px_rgba(15,23,42,0.18)]">
+              <div className="relative aspect-[9/16] w-full">
+                <ContentImage src={reel.image} alt={reel.title} fill className="object-cover opacity-95" sizes="320px" intrinsicWidth={900} intrinsicHeight={1600} />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#05070d]/85 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 text-sm font-semibold text-white">{reel.title}</div>
+                <div className="absolute right-3 top-3 flex flex-col gap-2 text-white">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/35 backdrop-blur">
+                    <Heart className="h-4 w-4" />
+                  </span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/35 backdrop-blur">
+                    <MessageCircle className="h-4 w-4" />
+                  </span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black/35 backdrop-blur">
+                    <Share2 className="h-4 w-4" />
+                  </span>
                 </div>
-                <h3 className="mt-4 text-lg font-semibold">{post.title}</h3>
-                <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>Curator profile, saved resources, and collection notes.</p>
-              </Link>
-            ))}
-          </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
     </main>
