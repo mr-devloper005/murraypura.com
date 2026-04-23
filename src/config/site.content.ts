@@ -2,76 +2,71 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Independent reading platform',
+    tagline: 'Profiles & bookmarking',
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
+    tagline: 'Profiles & bookmarking',
   },
   hero: {
-    badge: 'Latest stories and visuals',
-    title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
-    description:
-      'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
+    badge: 'Curated for calm discovery',
+    title: ['A refined home for', 'profiles and saved links.'],
+    description: 'Murraypura brings together public profiles and social bookmarking so you can follow people, save lanes, and return without algorithmic noise.',
     primaryCta: {
-      label: 'Read latest stories',
-      href: '/articles',
+      label: 'Open bookmarks',
+      href: '/sbm',
     },
     secondaryCta: {
-      label: 'Explore visuals',
-      href: '/images',
+      label: 'Browse profiles',
+      href: '/profile',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
+    searchPlaceholder: 'Search profiles, collections, and saved links',
     focusLabel: 'Focus',
-    featureCardBadge: 'latest cover rotation',
-    featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
-    featureCardDescription:
-      'Recent images and stories stay at the center of the experience without changing any core platform behavior.',
+    featureCardBadge: 'Curator spotlight',
+    featureCardTitle: 'Fresh saves and profile updates stay at the center of the experience.',
+    featureCardDescription: 'The homepage keeps bookmark lanes and identity surfaces connected so visitors always know where to go next.',
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
-      description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
-      openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+      title: 'Profiles and social bookmarking',
+      description: 'Murraypura is a warm, editorial space for public profiles, curated bookmarks, and returning to what matters.',
+      openGraphTitle: 'Profiles and social bookmarking',
+      openGraphDescription: 'Save links with context, spotlight curators, and explore collections built for calm discovery.',
+      keywords: ['profiles', 'social bookmarking', 'saved links', 'Murraypura', 'collections'],
     },
-    introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introBadge: 'About Murraypura',
+    introTitle: 'Built for identity-first profiles and intentional bookmarking.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'Murraypura focuses on two surfaces only: who people are on their profile pages, and what they save across bookmark collections.',
+      'Instead of mixing in listings, classifieds, or document libraries, the experience stays narrow—so navigation stays obvious and every screen reinforces the same story.',
+      'Whether someone starts with a profile or a shelf of links, they can move between both without losing context.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'Editorial homepage rhythm inspired by luxury wellness brands—applied to bookmarking.',
+      'Gold accent CTAs, serif headlines, and soft cream panels for calmer scanning.',
+      'Sections dedicated to curators, collections, and community proof—not generic feeds.',
+      'Lightweight interactions that keep saving and browsing fast.',
     ],
     primaryLink: {
-      label: 'Browse articles',
-      href: '/articles',
+      label: 'View bookmarks',
+      href: '/sbm',
     },
     secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
+      label: 'Meet profiles',
+      href: '/profile',
     },
   },
   cta: {
-    badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
-    description:
-      'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
+    badge: 'Start saving',
+    title: 'Keep profiles and bookmarks in one connected, quieter experience.',
+    description: 'Murraypura is tuned for social bookmarking and public profiles—nothing extra cluttering the path.',
     primaryCta: {
-      label: 'Get Started Free',
-      href: '/register',
+      label: 'Browse bookmarks',
+      href: '/sbm',
     },
     secondaryCta: {
-      label: 'Contact Sales',
-      href: '/contact',
+      label: 'Open profiles',
+      href: '/profile',
     },
   },
   taskSectionHeading: 'Latest {label}',
@@ -81,31 +76,31 @@ export const siteContent = {
 export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'social'>, { title: string; description: string }> = {
   article: {
     title: 'Articles and stories',
-    description: 'Read articles, stories, guides, and long-form posts across topics and interests.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   listing: {
     title: 'Listings and discoverable pages',
-    description: 'Explore listings, services, brands, and structured pages organized for easier browsing.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   classified: {
     title: 'Classifieds and announcements',
-    description: 'Browse classifieds, offers, notices, and time-sensitive posts across categories.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   image: {
     title: 'Images and visual posts',
-    description: 'Explore image-led posts, galleries, and visual stories from across the platform.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   profile: {
     title: 'Profiles and public pages',
-    description: 'Discover public profiles, brand pages, and identity-focused posts in one place.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   sbm: {
     title: 'Curated links and saved resources',
-    description: 'Browse useful links, saved references, and curated resources organized for discovery.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
   pdf: {
     title: 'PDFs and downloadable resources',
-    description: 'Open reports, documents, and downloadable resources shared across the platform.',
+    description: 'A SBM , Profile site for Murraypura, built for clean discovery and structured publishing.',
   },
 }
 

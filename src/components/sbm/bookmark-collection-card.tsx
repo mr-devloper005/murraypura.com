@@ -20,8 +20,8 @@ export function BookmarkCollectionCard({ collection }: { collection: BookmarkCol
   return (
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
       <Link href={`/sbm/collections/${collection.id}`} className="block">
-        <Card className="group h-full overflow-hidden border-border bg-card transition-all hover:border-muted-foreground/20">
-        <div className="grid grid-cols-3 gap-1">
+        <Card className="group h-full overflow-hidden rounded-[1.75rem] border border-[#e8dfd2] bg-[#fffefb] text-[#2a1f1a] shadow-[0_18px_50px_rgba(58,42,28,0.06)] transition-all hover:border-[#dfc9b0] hover:shadow-[0_22px_60px_rgba(58,42,28,0.09)]">
+        <div className="grid grid-cols-3 gap-px bg-[#e8dfd2]">
           {collection.coverImages.slice(0, 3).map((image, index) => (
             <div key={`${collection.id}-${index}`} className="relative aspect-square overflow-hidden">
               <Image
@@ -36,20 +36,20 @@ export function BookmarkCollectionCard({ collection }: { collection: BookmarkCol
         <CardContent className="p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Folder className="h-4 w-4 text-accent" />
-              <h3 className="text-lg font-semibold text-foreground">{collection.name}</h3>
+              <Folder className="h-4 w-4 text-[#c9a227]" />
+              <h3 className="text-lg font-semibold tracking-tight text-[#2a1f1a]">{collection.name}</h3>
             </div>
             {collection.isPrivate && (
-              <Badge variant="secondary" className="gap-1">
+              <Badge variant="secondary" className="gap-1 border border-[#e4d8cc] bg-[#f3ebe0] text-[#5c4810]">
                 <Lock className="h-3 w-3" />
                 Private
               </Badge>
             )}
           </div>
-          <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+          <p className="mt-2 line-clamp-2 text-sm text-[#6b584c]">
             {collection.description}
           </p>
-          <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+          <div className="mt-4 flex items-center justify-between text-xs text-[#8a7568]">
             <span>{collection.bookmarks.length} bookmarks</span>
             <span suppressHydrationWarning>
               Updated {mounted ? formatDistanceToNow(new Date(collection.updatedAt), { addSuffix: true }) : 'recently'}

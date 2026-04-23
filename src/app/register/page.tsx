@@ -2,56 +2,63 @@ import Link from 'next/link'
 import { Bookmark, Building2, FileText, Image as ImageIcon, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
+import { RegisterForm } from '@/components/auth/register-form'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { REGISTER_PAGE_OVERRIDE_ENABLED, RegisterPageOverride } from '@/overrides/register-page'
 
-function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
+const shell = 'min-h-screen bg-[#faf6f0] text-[#2a1f1a]'
+const side = 'border border-[#e8dfd2] bg-[#fffefb] shadow-[0_24px_80px_rgba(58,42,28,0.06)]'
+const panel = 'border border-[#e8dfd2] bg-white/90 shadow-[0_24px_80px_rgba(58,42,28,0.08)]'
+const muted = 'text-[#6b584c]'
+const action = 'bg-[#e8c547] text-[#1a120e] hover:bg-[#dfc03a]'
+
+function getRegisterContent(kind: ReturnType<typeof getProductKind>) {
   if (kind === 'directory') {
     return {
-      shell: 'bg-[#f8fbff] text-slate-950',
-      panel: 'border border-slate-200 bg-white',
-      side: 'border border-slate-200 bg-slate-50',
-      muted: 'text-slate-600',
-      action: 'bg-slate-950 text-white hover:bg-slate-800',
       icon: Building2,
       title: 'Create a business-ready account',
-      body: 'List services, manage locations, and activate trust signals with a proper directory workflow.',
+      body: 'List services, manage locations, and activate trust signals with a directory workflow tuned for clarity.',
+      bullets: [
+        'Structured onboarding for listings and verification',
+        'Location and category lanes that stay easy to scan',
+        'A calm surface so customers find you without noise',
+      ],
     }
   }
   if (kind === 'editorial') {
     return {
-      shell: 'bg-[#fbf6ee] text-[#241711]',
-      panel: 'border border-[#dcc8b7] bg-[#fffdfa]',
-      side: 'border border-[#e6d6c8] bg-[#fff4e8]',
-      muted: 'text-[#6e5547]',
-      action: 'bg-[#241711] text-[#fff1e2] hover:bg-[#3a241b]',
       icon: FileText,
       title: 'Start your contributor workspace',
-      body: 'Create a profile for essays, issue drafts, editorial review, and publication scheduling.',
+      body: 'Create a profile for essays, drafts, editorial review, and publication scheduling—without a noisy default feed.',
+      bullets: [
+        'Voice-forward profile that matches long-form work',
+        'Clear lanes for pitches, revisions, and launches',
+        'Gold-accented actions so the next step always reads cleanly',
+      ],
     }
   }
   if (kind === 'visual') {
     return {
-      shell: 'bg-[#07101f] text-white',
-      panel: 'border border-white/10 bg-white/6',
-      side: 'border border-white/10 bg-white/5',
-      muted: 'text-slate-300',
-      action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
       icon: ImageIcon,
       title: 'Set up your creator profile',
       body: 'Launch a visual-first account with gallery publishing, identity surfaces, and profile-led discovery.',
+      bullets: [
+        'Hero imagery with editorial contrast, not generic grids',
+        'Licensing and collaboration notes beside your work',
+        'Navigation that keeps attention on what you publish',
+      ],
     }
   }
   return {
-    shell: 'bg-[#f7f1ea] text-[#261811]',
-    panel: 'border border-[#ddcdbd] bg-[#fffaf4]',
-    side: 'border border-[#e8dbce] bg-[#f3e8db]',
-    muted: 'text-[#71574a]',
-    action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
     icon: Bookmark,
-    title: 'Create a curator account',
-    body: 'Build shelves, save references, and connect collections to your profile without a generic feed setup.',
+    title: 'Create your Murraypura account',
+    body: 'Join with a profile-first identity, bookmark shelves you can scan in seconds, and collections that feel intentional—not algorithmic.',
+    bullets: [
+      'Profiles that read like introductions, not dashboards',
+      'Bookmark lanes with warm contrast and quick scanning',
+      'Sessions saved locally so you can explore without friction',
+    ],
   }
 }
 
@@ -62,38 +69,41 @@ export default function RegisterPage() {
 
   const { recipe } = getFactoryState()
   const productKind = getProductKind(recipe)
-  const config = getRegisterConfig(productKind)
-  const Icon = config.icon
+  const content = getRegisterContent(productKind)
+  const Icon = content.icon
 
   return (
-    <div className={`min-h-screen ${config.shell}`}>
+    <div className={shell}>
       <NavbarShell />
       <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-          <div className={`rounded-[2rem] p-8 ${config.side}`}>
-            <Icon className="h-8 w-8" />
-            <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em]">{config.title}</h1>
-            <p className={`mt-5 text-sm leading-8 ${config.muted}`}>{config.body}</p>
+        <section className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-stretch">
+          <div className={`rounded-[2.5rem] p-8 lg:p-10 ${side}`}>
+            <Icon className="h-8 w-8 text-[#c9a227]" />
+            <h1 className="mt-5 text-4xl font-semibold tracking-[-0.04em] sm:text-[2.75rem]">{content.title}</h1>
+            <p className={`mt-5 text-sm leading-8 ${muted}`}>{content.body}</p>
             <div className="mt-8 grid gap-4">
-              {['Different onboarding per product family', 'No repeated one-size-fits-all shell', 'Profile, publishing, and discovery aligned'].map((item) => (
-                <div key={item} className="rounded-[1.5rem] border border-current/10 px-4 py-4 text-sm">{item}</div>
+              {content.bullets.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-[1.5rem] border border-[#3d2f28]/8 bg-white/70 px-4 py-4 text-sm leading-relaxed text-[#4a3d35]"
+                >
+                  {item}
+                </div>
               ))}
             </div>
           </div>
 
-          <div className={`rounded-[2rem] p-8 ${config.panel}`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Create account</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Full name" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="What are you creating or publishing?" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Create account</button>
-            </form>
-            <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
+          <div className={`rounded-[2.5rem] p-8 lg:p-10 ${panel}`}>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8a7568]">New member</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2a1f1a] sm:text-3xl">Create your account</h2>
+            <p className={`mt-3 text-sm leading-relaxed ${muted}`}>
+              Use a real email you check—we will use it for sign-in and important updates. Passwords stay on this device until you connect a backend.
+            </p>
+            <RegisterForm actionClassName={action} />
+            <div className={`mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-[#efe6db] pt-6 text-sm ${muted}`}>
               <span>Already have an account?</span>
-              <Link href="/login" className="inline-flex items-center gap-2 font-semibold hover:underline">
-                <Sparkles className="h-4 w-4" />
+              <Link href="/login" className="inline-flex items-center gap-2 font-semibold text-[#2a1f1a] hover:underline">
+                <Sparkles className="h-4 w-4 text-[#c9a227]" />
                 Sign in
               </Link>
             </div>
