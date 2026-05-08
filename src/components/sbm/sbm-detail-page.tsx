@@ -78,34 +78,83 @@ const extractLinksFromText = (text: string): { text: string; url: string | null 
   return { text, url: null };
 };
 
-const parseHtmlToParagraphs = (html: string): string[] => {
+const stripHtml = (html: string): string => {
+  if (!html || typeof html !== "string") return "";
+  return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+};
+
+const ANCHOR_PLACEHOLDER = "\u0000ANCHOR\u0000";
+
+const sanitizeHtmlWithLinks = (html: string): string => {
+  if (!html || typeof html !== "string") return "";
+
+  // Remove script and style tags first
+  let cleaned = html
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
+
+  // Remove event handlers and javascript: hrefs globally
+  cleaned = cleaned
+    .replace(/\s+on[a-z]+\s*=\s*(["']).*?\1/gi, "")
+    .replace(/\s+on[a-z]+\s*=\s*[^>\s]*/gi, "")
+    .replace(/\shref\s*=\s*(["'])javascript:.*?\1/gi, ' href="#"');
+
+  const anchors: string[] = [];
+
+  // Capture and sanitize <a> tags
+  cleaned = cleaned.replace(/<a\s+([^>]*)>([\s\S]*?)<\/a>/gi, (match, attrs, text) => {
+    const hrefMatch = attrs.match(/href\s*=\s*(["'])(.*?)\1/i);
+    const href = hrefMatch ? hrefMatch[2] : "";
+
+    // Only allow safe hrefs
+    const isSafe = !href || /^https?:\/\//i.test(href) || /^\//i.test(href) || /^mailto:/i.test(href);
+    if (!isSafe) {
+      // Strip the anchor but keep the inner text
+      return text;
+    }
+
+    const safeHref = href.replace(/"/g, "&quot;");
+    const safeText = sanitizeHtmlWithLinks(text); // recursively strip nested tags
+    const anchorTag = `<a href="${safeHref}" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 text-red-600 hover:text-red-500">${safeText}</a>`;
+    const idx = anchors.length;
+    anchors.push(anchorTag);
+    return `${ANCHOR_PLACEHOLDER}${idx}`;
+  });
+
+  // Strip all remaining HTML tags
+  cleaned = cleaned.replace(/<[^>]+>/g, " ");
+
+  // Restore anchors
+  anchors.forEach((tag, idx) => {
+    cleaned = cleaned.replace(`${ANCHOR_PLACEHOLDER}${idx}`, tag);
+  });
+
+  // Clean whitespace
+  return cleaned.replace(/\s+/g, " ").trim();
+};
+
+const parseHtmlToParagraphsWithLinks = (html: string): string[] => {
   if (!html || typeof html !== "string") return [];
-  
-  // Remove script and style tags for security
+
+  // Remove script and style tags
   const sanitized = html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
-  
+
   // Split by common paragraph delimiters
   const paragraphs = sanitized
     .split(/<\/?p[^>]*>|<br\s*\/?>|\n\n+/gi)
     .map((p) => p.trim())
     .filter((p) => p.length > 0 && !p.match(/^\s*$/));
-  
+
   // If no paragraph tags found, treat the whole content as one paragraph
   if (paragraphs.length === 0 && sanitized.trim()) {
-    return [sanitized.trim()];
+    return [sanitizeHtmlWithLinks(sanitized.trim())].filter((p) => p.length > 0);
   }
-  
-  // Strip remaining HTML tags but keep the text
-  return paragraphs.map((p) => 
-    p.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()
-  ).filter((p) => p.length > 0);
-};
 
-const stripHtml = (html: string): string => {
-  if (!html || typeof html !== "string") return "";
-  return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  return paragraphs
+    .map((p) => sanitizeHtmlWithLinks(p))
+    .filter((p) => p.length > 0);
 };
 
 function ActionButton({
@@ -151,7 +200,7 @@ export function SbmDetailPage({ post, related }: SbmDetailPageProps) {
   
   const rawDescription = content.description || content.body || post.summary || "";
   const isHtml = /<[a-z][\s\S]*>/i.test(rawDescription);
-  const paragraphs = isHtml ? parseHtmlToParagraphs(rawDescription) : [rawDescription];
+  const paragraphs = isHtml ? parseHtmlToParagraphsWithLinks(rawDescription) : [rawDescription];
   const plainTextForLinks = stripHtml(rawDescription);
   const { url: extractedUrl } = extractLinksFromText(plainTextForLinks);
   const sourceUrl = extractUrlFromContent(content) || extractedUrl;
@@ -272,12 +321,14 @@ export function SbmDetailPage({ post, related }: SbmDetailPageProps) {
           <div className="border-t border-neutral-200" />
 
           {/* Content */}
-          <div className="prose prose-lg max-w-none prose-p:text-neutral-700 prose-a:text-neutral-900 prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-neutral-600">
+          <div className="prose prose-lg max-w-none prose-p:text-neutral-700 prose-a:text-red-600 prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-red-500">
             {paragraphs.length > 0 ? (
-              paragraphs.map((paragraph, index) => (
-                <p key={index} className="leading-relaxed">
-                  {paragraph}
-                </p>
+              paragraphs.map((paragraph: string, index: number) => (
+                <p
+                  key={index}
+                  className="leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: paragraph }}
+                />
               ))
             ) : (
               <p className="italic text-neutral-400">No description available.</p>
