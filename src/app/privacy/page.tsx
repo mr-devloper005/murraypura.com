@@ -69,10 +69,6 @@ export default function PrivacyPage() {
         </aside>
 
         <div className="min-w-0 flex-1 space-y-6">
-          <div className="rounded-[1.5rem] border border-[#e8dfd2] bg-[#fffefb] px-5 py-4 text-sm text-[#6b584c]">
-            <span className="font-semibold text-[#2a1f1a]">Last updated:</span> April 21, 2026
-          </div>
-
           {sections.map((section) => (
             <section
               key={section.title}
