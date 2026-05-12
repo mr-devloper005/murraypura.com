@@ -46,9 +46,11 @@ export function PageShell({
                 <Link href="/" className="rounded-full border border-[#e4d8cc] bg-white/80 px-4 py-2 text-[#2a1f1a] shadow-sm hover:bg-[#fffefb]">
                   Home
                 </Link>
-                <Link href="/profile" className="rounded-full border border-[#e4d8cc] bg-white/80 px-4 py-2 text-[#2a1f1a] shadow-sm hover:bg-[#fffefb]">
-                  Profiles
-                </Link>
+                {!pathname?.startsWith('/careers') && !pathname?.startsWith('/about') && !pathname?.startsWith('/community') && !pathname?.startsWith('/contact') && !pathname?.startsWith('/privacy') && !pathname?.startsWith('/terms') && !pathname?.startsWith('/cookies') && !pathname?.startsWith('/licenses') ? (
+                  <Link href="/profile" className="rounded-full border border-[#e4d8cc] bg-white/80 px-4 py-2 text-[#2a1f1a] shadow-sm hover:bg-[#fffefb]">
+                    Profiles
+                  </Link>
+                ) : null}
                 <Link href="/sbm" className="inline-flex items-center gap-2 rounded-full bg-[#e8c547] px-4 py-2 text-[#1a120e] shadow-[0_10px_30px_rgba(232,197,71,0.35)] hover:bg-[#dfc03a]">
                   Bookmarks
                   <ArrowRight className="h-4 w-4" />

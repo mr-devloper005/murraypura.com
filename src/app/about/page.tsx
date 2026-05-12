@@ -29,9 +29,9 @@ const pillars = [
 ]
 
 const timeline = [
-  { year: '2024', title: 'Platform launch', copy: 'Murraypura began as a simple bookmarking tool for a small group of designers and researchers.' },
-  { year: '2025', title: 'Public profiles', copy: 'Added profile pages so every collection could be traced back to its curator with context.' },
-  { year: '2026', title: 'Community features', copy: 'Introduced sharing, collaboration tools, and the warm editorial experience you see today.' },
+  { title: 'Platform launch', copy: 'Murraypura began as a simple bookmarking tool for a small group of designers and researchers.' },
+  { title: 'Public profiles', copy: 'Added profile pages so every collection could be traced back to its curator with context.' },
+  { title: 'Community features', copy: 'Introduced sharing, collaboration tools, and the warm editorial experience you see today.' },
 ]
 
 export default function AboutPage() {
@@ -97,9 +97,8 @@ export default function AboutPage() {
         </div>
         <div className="mt-8 grid gap-8 md:grid-cols-3">
           {timeline.map((item) => (
-            <div key={item.year} className="border-l border-[#e8c547]/40 pl-5">
-              <p className="text-sm font-semibold text-[#e8c547]">{item.year}</p>
-              <p className="mt-2 text-lg font-semibold text-white">{item.title}</p>
+            <div key={item.title} className="border-l border-[#e8c547]/40 pl-5">
+              <p className="text-lg font-semibold text-white">{item.title}</p>
               <p className="mt-2 text-sm leading-relaxed text-[#c9bfb0]">{item.copy}</p>
             </div>
           ))}

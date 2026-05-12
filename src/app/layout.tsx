@@ -43,6 +43,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${fontSans.variable} ${fontDisplay.variable} ${fontScript.variable}`}
     >
       <body
+        suppressHydrationWarning
         data-site-shell={recipe.homeLayout}
         data-motion-pack={recipe.motionPack}
         className={`${brandPack.bodyClassName} ${brandPack.fontClassName} ${brandPack.paletteClassName}`}
