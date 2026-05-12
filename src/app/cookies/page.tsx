@@ -37,10 +37,6 @@ export default function CookiesPage() {
       title="Cookie Policy"
       description="Cookies help Murraypura remember who you are, keep collections safe, and understand how the interface performs in the real world. Here is how we use them."
     >
-      <div className="rounded-[1.5rem] border border-[#e8dfd2] bg-[#fffefb] px-5 py-4 text-sm text-[#6b584c]">
-        <span className="font-semibold text-[#2a1f1a]">Last updated:</span> April 21, 2026
-      </div>
-
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         {cookies.map((c) => (
           <div key={c.title} className="rounded-[1.75rem] border border-[#e8dfd2] bg-white/90 p-6 shadow-[0_14px_40px_rgba(58,42,28,0.04)] sm:p-8">

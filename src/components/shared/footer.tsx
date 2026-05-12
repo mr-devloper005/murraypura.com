@@ -148,13 +148,15 @@ export function Footer() {
                     Home
                   </Link>
                 </li>
-                {footerLinks.platform.map((item: any) => (
-                  <li key={item.name}>
-                    <Link href={item.href} className="hover:text-white">
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
+                {footerLinks.platform
+                  .filter((item: any) => item.name !== 'User')
+                  .map((item: any) => (
+                    <li key={item.name}>
+                      <Link href={item.href} className="hover:text-white">
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </div>
 
