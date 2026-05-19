@@ -71,11 +71,11 @@ export const fetchTaskPostBySlug = async (task: TaskKey, slug: string) => {
     feed?.posts.find((post) => post.slug === slug && getPostType(post) === type) || null;
 
   try {
-    const cachedFeed = await fetchSiteFeed(200);
+    const cachedFeed = await fetchSiteFeed(2000);
     const cachedMatch = resolveFromFeed(cachedFeed);
     if (cachedMatch) return cachedMatch;
 
-    const freshFeed = await fetchSiteFeed(200, { fresh: true });
+    const freshFeed = await fetchSiteFeed(2000, { fresh: true });
     const freshMatch = resolveFromFeed(freshFeed);
     if (freshMatch) return freshMatch;
   } catch {
