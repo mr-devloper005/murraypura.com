@@ -115,9 +115,7 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
   // Parse description to extract clean content
   const { mainContent: cleanDescription } = parseDescription(rawDescription);
   const descriptionHtml = formatRichHtml(cleanDescription);
-  
-  // Additional content for About section
-  const additionalContent = `<p><a href="https://Rmapproach.com" target="_blank" rel="noopener noreferrer"><b>Emotional Intelligence Training in Mumbai</b></a></p>`;
+
   const suggestedArticles = await fetchTaskPosts("article", 6);
   const baseUrl = SITE_CONFIG.baseUrl.replace(/\/$/, "");
   const breadcrumbData = {
@@ -250,10 +248,6 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
                   <article
                     className="article-content prose prose-slate mt-4 max-w-none text-sm leading-7 text-muted-foreground prose-p:my-3 prose-a:text-primary prose-a:underline prose-strong:font-semibold"
                     dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-                  />
-                  <div 
-                    className="article-content prose prose-slate mt-4 pt-4 border-t border-border text-sm prose-a:text-primary prose-a:underline"
-                    dangerouslySetInnerHTML={{ __html: additionalContent }}
                   />
                 </div>
                 
